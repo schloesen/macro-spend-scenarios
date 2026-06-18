@@ -1,0 +1,35 @@
+# Secrets — never commit
+.env
+*.env
+
+# Cached FRED data (re-fetchable; don't commit raw pulls)
+data/*.csv
+data/*.parquet
+!data/.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# Virtual envs
+.venv/
+venv/
+env/
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+.ipynb_checkpoints/
+
+# Claude Code local settings
+.claude/
+
+# Outputs — we commit ONE curated example, ignore the rest
+outputs/*
+!outputs/.gitkeep
+!outputs/example_scenarios.png

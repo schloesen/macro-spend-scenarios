@@ -1,0 +1,10 @@
+# Core scientific stack — kept intentionally minimal
+pandas>=2.0
+numpy>=1.24
+statsmodels>=0.14
+matplotlib>=3.7
+requests>=2.31
+PyYAML>=6.0
+
+# Testing
+pytest>=7.4

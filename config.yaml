@@ -1,0 +1,50 @@
+# =============================================================================
+# Macro-Driven Spend Scenario Tool — single source of truth
+# =============================================================================
+# Everything that drives the analysis lives here so the whole pipeline re-runs
+# with one command and no code edits. Series IDs are FRED codes.
+
+# --- Sample window (FRED observation range) ---------------------------------
+date_start: "1990-01-01"
+date_end: null            # null = latest available
+
+# --- Target series -----------------------------------------------------------
+# PCE = Personal Consumption Expenditures (nominal, monthly, SAAR $B).
+# Real alternative: PCEC96.
+target:
+  id: PCE
+  label: "Personal Consumption Expenditures"
+
+# --- Driver series -----------------------------------------------------------
+drivers:
+  - id: CPIAUCSL
+    label: "CPI (All Urban Consumers)"
+  - id: FEDFUNDS
+    label: "Effective Fed Funds Rate"
+  - id: UNRATE
+    label: "Unemployment Rate"
+  - id: DSPI
+    label: "Disposable Personal Income"
+
+# --- Data fetch / caching ----------------------------------------------------
+data:
+  cache_dir: "data"
+  # Re-use a cached series if it was pulled within this many days; else refetch.
+  max_cache_age_days: 7
+
+# --- Modeling ----------------------------------------------------------------
+# DELIBERATELY UNSET. The modeling approach (transformations, stationarity
+# handling, feature set) is a Stage-2 decision the user owns. This block is a
+# placeholder so the schema is visible, not a default to be silently adopted.
+model: {}
+
+# --- Scenarios ---------------------------------------------------------------
+# DELIBERATELY UNSET until the model exists (Stage 3). Scenario assumptions are
+# expressed as driver paths/shocks; their exact form depends on the chosen
+# transformations, so we wait.
+scenarios: {}
+
+# --- Output ------------------------------------------------------------------
+output:
+  dir: "outputs"
+  chart_name: "example_scenarios.png"
