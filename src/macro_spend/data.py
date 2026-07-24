@@ -130,15 +130,20 @@ def fetch_all(
     columns: dict[str, pd.Series] = {}
 
     for s in cfg.all_series:
+        # Determine the source BEFORE fetching — fetch_series writes the cache,
+        # so checking freshness afterwards would always report "cache".
+        from_cache = not force and _cache_is_fresh(
+            _cache_path(cfg.cache_dir, s.id), cfg.max_cache_age_days
+        )
         data = fetch_series(s, cfg, api_key=api_key, force=force)
         columns[s.id] = data
         if verbose:
-            src = "cache" if not force and _cache_is_fresh(
-                _cache_path(cfg.cache_dir, s.id), cfg.max_cache_age_days
-            ) else "FRED"
+            n_missing = int(data.isna().sum())
+            gap = f"  {n_missing} missing" if n_missing else ""
             print(
                 f"  {s.id:<10} {len(data):>5} obs  "
-                f"[{data.index.min():%Y-%m} → {data.index.max():%Y-%m}]  ({src})"
+                f"[{data.index.min():%Y-%m} → {data.index.max():%Y-%m}]  "
+                f"({'cache' if from_cache else 'FRED'}){gap}"
             )
 
     frame = pd.concat(columns.values(), axis=1, keys=columns.keys())
